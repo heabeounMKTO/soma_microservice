@@ -1,0 +1,28 @@
+version: "3.9"
+
+x-default-opts: &default-opts
+  logging:
+    options:
+      max-size: "100m"
+
+networks:
+  backend:
+    driver: overlay
+    attachable: true
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16 
+    env_file: .env
+    volumes:
+      - ${POSTGRES_DIR}:/var/lib/postgresql/data
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - ${POSTGRES_PORT}:5432
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    networks:
+      - backend
+

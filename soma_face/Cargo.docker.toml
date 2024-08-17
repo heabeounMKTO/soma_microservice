@@ -1,0 +1,40 @@
+[package]
+name = "soma_face"
+version = "0.1.0"
+edition = "2021"
+author = "heabeounMKTO"
+
+[dependencies]
+anyhow = "1.0.86"
+ort = { version = "2.0.0-rc.2"}
+ndarray = "0.15.6"
+actix-web = { version = "4.8.0", features = ["compress-brotli", "compress-gzip", "compress-zstd", "cookies", "http2", "macros", "unicode"], default-features = false }
+image = "0.25.2"
+clap = { version = "4.5.9", features = ["derive"] }
+dotenvy = "0.15.7"
+serde = { version = "1.0.204", features = ["derive"] }
+actix-multipart = "0.7.2"
+env_logger = "0.11.3"
+utoipa = { version = "4.2.3", features = ["actix_extras"] }
+utoipa-swagger-ui = { version = "7.1.0", features = ["actix-web"] }
+tract-onnx = { version = "0.21.6" }
+serde_json = "1.0.121"
+reqwest = "0.12.5"
+soma_core = {path="../soma_core"}
+tract-data = {version="0.21.6", optional=true}
+base64 = "0.22.1"
+
+[lib]
+name = "soma_face"
+path = "src/lib.rs"
+
+[[bin]]
+name = "webserver"
+path = "src/server.rs"
+
+[profile.release]
+opt-level = "z"
+strip = true  # WE STRIPPING THE SYMBOLS WITH THIS ONE  🗣️🗣️🔥🔥🔥
+lto = true
+
+

@@ -1,0 +1,29 @@
+[package]
+name = "soma_desc"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-multipart = "0.7.2"
+actix-web = "4.8.0"
+anyhow = "1.0.86"
+base64 = "0.22.1"
+candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.6.0", features = ["cuda"] }
+candle-examples = { git = "https://github.com/huggingface/candle.git", version = "0.6.0", features = ["cuda"] }
+candle-nn = { git = "https://github.com/huggingface/candle.git", version = "0.6.0", features = ["cuda"] }
+candle-transformers = { version = "0.6.0", git = "https://github.com/huggingface/candle.git" ,  features = ["cuda"] }
+clap = { version = "4.5.7", features = ["derive"] }
+deadpool-postgres = { version = "0.14.0", features = ["serde"] }
+dotenvy = "0.15.7"
+env_logger = "0.11.3"
+hf-hub = "0.3.2"
+image = "0.25.1"
+lazy_static = "1.5.0"
+postgres = "0.19.7"
+serde = { version = "1.0.203", features = ["derive"] }
+tokenizers = "0.19.1"
+
+[profile.release]
+opt-level = "z"
+strip = true  # WE STRIPPING THE SYMBOLS WITH THIS ONE  🗣️🗣️🔥🔥🔥
+lto = true

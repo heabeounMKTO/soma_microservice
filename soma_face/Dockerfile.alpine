@@ -1,0 +1,16 @@
+FROM rust:latest as builder 
+WORKDIR /home
+ENV DEBIAN_FRONTEND=noninteractive
+COPY ./src ./src
+COPY ./Cargo.toml ./Cargo.toml
+RUN apt-get update && apt-get upgrade -y 
+RUN apt install -y wget musl-tools musl-dev openssl libssl-dev pkg-config 
+RUN rustup target add x86_64-unknown-linux-musl
+RUN wget https://github.com/microsoft/onnxruntime/releases/download/v1.18.1/onnxruntime-linux-x64-1.18.1.tgz
+RUN tar -xvf onnxruntime-linux-x64-1.18.1.tgz
+ENV LD_LIBRARY_PATH=/home/onnxruntime-linux-x64-1.18.1/lib${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
+ENV OPENSSL_STATIC=true
+ENV OPENSSL_DIR=/usr/local/musl
+ENV OPENSSL_INCLUDE_DIR=/usr/include
+ENV OPENSSL_LIB_DIR=/usr/lib
+RUN cargo build --release --target=x86_64-unknown-linux-musl

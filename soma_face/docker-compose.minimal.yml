@@ -1,0 +1,10 @@
+services:
+  face_api_minimal:
+    image: harbor6.wns8.io/d-ai/face_api_minimal:0.0.1
+    build:
+      context: .
+      dockerfile: Dockerfile.detect
+    ports:
+      - "9999:9999"
+    volumes:
+      - .:/app

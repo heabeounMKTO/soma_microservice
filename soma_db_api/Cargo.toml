@@ -1,0 +1,26 @@
+[package]
+name = "soma_db_api"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+actix-multipart = "0.7.2"
+actix-web = "4.8.0"
+anyhow = "1.0.86"
+deadpool-postgres = { version = "0.14.0", features = ["serde"] }
+dotenvy = "0.15.7"
+env_logger = "0.11.4"
+pgvector = { version = "0.4.0", features = ["postgres"] }
+postgres = "0.19.8"
+serde = { version = "1.0.204", features = ["derive"] }
+serde_json = "1.0.120"
+
+
+[lib]
+name = "soma_db_api"
+path = "src/lib.rs"
+
+[[bin]]
+name = "soma_db_api"
+path = "src/server.rs"
+
