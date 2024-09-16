@@ -1,6 +1,5 @@
 use crate::webserver;
 use utoipa::OpenApi;
-use utoipa_swagger_ui::{SwaggerUi, Url};
 use webserver::handler::{
     GetFaceRequest, GetFaceResponse, GetFaceResponseNone, GetFaceVecRequest, GetFaceVecResponse,
 };

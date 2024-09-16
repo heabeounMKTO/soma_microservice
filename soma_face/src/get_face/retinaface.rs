@@ -1,16 +1,13 @@
-use soma_core::common_utils::{image_to_ndarray, Bbox};
-use soma_core::onnx_backend::{Inference, InferenceResult, OnnxModel};
+use crate::core::common_utils::{image_to_ndarray, Bbox};
+use crate::core::onnx_backend::{Inference, InferenceResult, OnnxModel};
 use anyhow::{Error, Result};
 use image::imageops;
-use image::{DynamicImage, RgbImage};
+use image::DynamicImage;
 use ndarray::{
-    array, s, stack, Array, Array1, Array2, Array3, ArrayBase, ArrayD, ArrayView2, ArrayView4,
-    ArrayViewD, Axis, Dim, Ix2, Ix3, IxDyn, IxDynImpl, OwnedRepr,
+    array, s, stack, Array, Array2, Array3, ArrayBase, ArrayView2, ArrayViewD, Axis, Dim, Ix3,
+    IxDynImpl, OwnedRepr,
 };
-use ort::{
-    inputs, CPUExecutionProvider, ExecutionProvider, GraphOptimizationLevel, Session,
-    SessionOutputs,
-};
+use ort::{inputs, CPUExecutionProvider, GraphOptimizationLevel, Session, SessionOutputs};
 
 pub struct GetFaceRetinaface {
     pub onnx_model: OnnxModel,
@@ -27,8 +24,8 @@ impl GetFaceRetinaface {
     ) -> Result<GetFaceRetinaface, Error> {
         Ok(GetFaceRetinaface {
             onnx_model: GetFaceRetinaface::load(model_path, use_fp16),
-            width: width,
-            height: height,
+            width,
+            height,
         })
     }
 }
@@ -70,7 +67,7 @@ impl Inference for GetFaceRetinaface {
             .commit_from_file(model_path)
             .unwrap();
         OnnxModel {
-            model: model,
+            model,
             is_fp16: fp16,
         }
     }
@@ -121,8 +118,8 @@ fn stack_anchor_center(anchor_centers: &Array2<f32>, num_anchors: usize) -> Arra
     for i in 0..num_anchors {
         stacked.slice_mut(s![.., i, ..]).assign(anchor_centers);
     }
-    let reshaped = stacked.into_shape((rows * num_anchors, cols)).unwrap();
-    reshaped
+
+    stacked.into_shape((rows * num_anchors, cols)).unwrap()
 }
 
 fn anchor_centers(height: usize, width: usize) -> Array<f32, Ix3> {
@@ -213,10 +210,10 @@ pub fn process_detections(
         let mut _anchor_centers = (ac.to_owned() * (stride.to_owned() as f32))
             .into_shape((height * width, 2))
             .unwrap();
-        let _stack = stack_anchor_center(&_anchor_centers, num_anchors as usize);
+        let _stack = stack_anchor_center(&_anchor_centers, num_anchors);
         let scaled_bbox = distance2bbox(&_stack.view(), &bbox_preds);
         let mut _reshape_kpss: ArrayBase<OwnedRepr<f32>, Dim<[usize; 3]>> = array![[[]]];
-        if include_kps == true {
+        if include_kps {
             let mut _kps = &inference[idx + fmc * 2]
                 .try_extract_tensor::<f32>()?
                 .into_owned();

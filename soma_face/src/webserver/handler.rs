@@ -1,19 +1,15 @@
-use soma_core::common_utils::{sort_conf_bbox, Bbox};
-use crate::webserver::service;
+use crate::core::common_utils::Bbox;
 use actix_multipart::form::tempfile::TempFile;
 use actix_multipart::form::text::Text;
 use actix_multipart::form::MultipartForm;
-use actix_multipart::Multipart;
-use anyhow::{Error, Result};
 use serde::{Deserialize, Serialize};
-use utoipa::{OpenApi, ToSchema};
-use utoipa_swagger_ui::{SwaggerUi, Url};
+use utoipa::ToSchema;
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, ToSchema)]
+#[derive(Debug, Copy, Clone, Serialize, Deserialize, ToSchema)]
 pub struct FaceResponse {
     pub confidence: f32,
-    pub height: i32,
-    pub width: i32,
+    pub height: i32, // Bbox.y2
+    pub width: i32,  // Bbox.x2
 }
 
 /// returns width and height from bbox
@@ -27,21 +23,23 @@ impl FaceResponse {
     /// takes in a vec of bbox
     pub fn from_bbox_vec(input_vec: &Vec<Bbox>) -> Vec<FaceResponse> {
         // let mut faces: Vec<FaceResponse> = vec![];
-        let faces = input_vec
+
+        input_vec
             .clone()
             .into_iter()
             .map(|x| {
                 let conf = x.confidence.to_owned();
                 let (w, h) = get_wh(&x);
-                let resp = FaceResponse {
+
+                FaceResponse {
                     confidence: conf,
                     width: w,
                     height: h,
-                };
-                resp
+                    // x: x.x1 as i32,
+                    // y: x.y1 as i32
+                }
             })
-            .collect();
-        faces
+            .collect()
     }
 }
 
@@ -99,4 +97,9 @@ impl GetLargestFaceResponse {
             cropped_face,
         }
     }
+}
+/// responds with GetLargestFaceResponse
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct GetFaceFromVideoRequest {
+    pub video_path: String,
 }

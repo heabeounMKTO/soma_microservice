@@ -23,6 +23,13 @@ reqwest = "0.12.5"
 soma_core = {path="../soma_core"}
 tract-data = {version="0.21.6", optional=true}
 base64 = "0.22.1"
+opencv = { version = "0.92.2", optional=true, features = ["video", "videoio"] }
+
+
+[features]
+gpuinference=[]
+readvid=["dep:opencv"]
+
 
 [lib]
 name = "soma_face"

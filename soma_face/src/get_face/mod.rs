@@ -1,14 +1,11 @@
 //! abstraction for running face detection models.
+
 pub mod retinaface;
 pub mod yolo;
 
-// use crate::core::{
-//     common_utils::{sort_conf_bbox, Bbox},
-//     onnx_backend::{Inference, InferenceResult},
-// };
-use soma_core::{
+use crate::core::{
     common_utils::{sort_conf_bbox, Bbox},
-    onnx_backend::{Inference, InferenceResult}
+    onnx_backend::{Inference, InferenceResult},
 };
 use anyhow::{Error, Result};
 use image::DynamicImage;
@@ -86,7 +83,7 @@ impl FaceExtractor {
         // combines results from all the inferece and takes the one with the highest confidence
         let mut combined_res = yolo_results;
         combined_res.extend(retina_results.clone());
-        if combined_res.len() > 0 {
+        if !combined_res.is_empty() {
             combined_res = sort_conf_bbox(&mut combined_res);
             Ok(vec![combined_res[0].to_owned()])
         } else {
