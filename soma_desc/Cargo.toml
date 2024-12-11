@@ -8,10 +8,10 @@ actix-multipart = "0.7.2"
 actix-web = "4.8.0"
 anyhow = "1.0.86"
 base64 = "0.22.1"
-candle-core = { git = "https://github.com/huggingface/candle.git", version = "0.6.0", features = ["cuda"] }
-candle-examples = { git = "https://github.com/huggingface/candle.git", version = "0.6.0", features = ["cuda"] }
-candle-nn = { git = "https://github.com/huggingface/candle.git", version = "0.6.0", features = ["cuda"] }
-candle-transformers = { version = "0.6.0", git = "https://github.com/huggingface/candle.git" ,  features = ["cuda"] }
+candle-core = { git = "https://github.com/huggingface/candle.git", features = ["cuda"] }
+candle-examples = { git = "https://github.com/huggingface/candle.git", features = ["cuda"] }
+candle-nn = { git = "https://github.com/huggingface/candle.git", features = ["cuda"] }
+candle-transformers = {  git = "https://github.com/huggingface/candle.git" ,  features = ["cuda"] }
 clap = { version = "4.5.7", features = ["derive"] }
 deadpool-postgres = { version = "0.14.0", features = ["serde"] }
 dotenvy = "0.15.7"

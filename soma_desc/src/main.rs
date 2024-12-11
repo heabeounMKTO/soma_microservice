@@ -56,15 +56,15 @@ async fn main() -> std::io::Result<()> {
     );
 
     println!("starting server on address: {:?}", &bind_addr);
-    HttpServer::new(move || {
-        let blip_model = web::Data::new(
+        let mut blip_model = web::Data::new(
             BlipModel::init(candle_core::Device::new_cuda(0).unwrap()).unwrap(),
         );
+    HttpServer::new(move || {
 
         App::new()
             .service(index)
             .service(get_image_description)
-            .app_data(blip_model)
+            .app_data(blip_model.clone())
     })
     .client_request_timeout(std::time::Duration::from_secs(0))
     .bind(&bind_addr)?
