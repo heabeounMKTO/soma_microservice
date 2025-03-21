@@ -1,4 +1,4 @@
 pub mod webserver;
 mod get_face;
-mod get_face_vec;
+pub mod get_face_vec;
 

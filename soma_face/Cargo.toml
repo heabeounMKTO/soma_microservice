@@ -23,6 +23,8 @@ reqwest = "0.12.5"
 soma_core = {path="../soma_core"}
 tract-data = {version="0.21.6", optional=true}
 base64 = "0.22.1"
+ndarray-linalg = "0.17.0"
+imageproc = "0.25.0"
 
 [lib]
 name = "soma_face"

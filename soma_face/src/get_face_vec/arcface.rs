@@ -54,7 +54,6 @@ fn preprocess_arcface(
     image_source: &DynamicImage,
 ) -> Result<ArrayBase<OwnedRepr<f32>, Dim<[usize; 4]>>, Error> {
     let img = image_source.resize_exact(112, 112, imageops::FilterType::Triangle);
-
     let mut ndarray_image = image_to_ndarray(&img);
     ndarray_image -= 127.5;
     ndarray_image *= 1.0 / 128.0;
