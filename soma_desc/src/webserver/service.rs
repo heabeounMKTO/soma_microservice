@@ -31,8 +31,9 @@ pub async fn get_image_description(
     req: HttpRequest,
 ) -> HttpResponse {
     let image = decode_base64(&request.data).expect("cannot decode image");
-    let emebeddings = blip_model.lock().unwrap()
-        .run(&image)
+     
+    let emebeddings = blip_model.try_lock().unwrap()
+        .run(&image.to_owned())
         .expect("cannot decode stream");
     let f = emebeddings.description;
     let _a = ImageDescResponse {
