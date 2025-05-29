@@ -54,7 +54,10 @@ async fn main() -> std::io::Result<()> {
     //     "host={} user={} port={} dbname={} password={}",
     //     &DB_HOST, &DB_USER, &DB_PORT, &DB_DATABASE, &DB_PASSWORD
     // );
+        
 
+
+    // TODO: add cpu
     println!("starting server on address: {:?}", &bind_addr);
         let mut blip_model = web::Data::new(
             Mutex::new(BlipModel::init(candle_core::Device::new_cuda(0).unwrap()).unwrap(),
