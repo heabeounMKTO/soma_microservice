@@ -21,7 +21,7 @@ image = "0.25.1"
 lazy_static = "1.5.0"
 postgres = "0.19.7"
 serde = { version = "1.0.203", features = ["derive"] }
-tokenizers = "0.19.1"
+tokenizers = "0.21.1"
 
 [profile.release]
 opt-level = "z"

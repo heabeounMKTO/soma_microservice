@@ -26,12 +26,12 @@ pub async fn index(req: HttpRequest) -> HttpResponse {
 
 #[post("/image_desc")]
 pub async fn get_image_description(
-    blip_model: web::Data<BlipModel>,
+    blip_model: web::Data<Mutex<BlipModel>>,
     request: web::Json<ImageDescRequest>,
     req: HttpRequest,
 ) -> HttpResponse {
     let image = decode_base64(&request.data).expect("cannot decode image");
-    let emebeddings = blip_model
+    let emebeddings = blip_model.lock().unwrap()
         .run(&image)
         .expect("cannot decode stream");
     let f = emebeddings.description;

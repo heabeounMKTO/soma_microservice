@@ -13,7 +13,8 @@ use std::env;
 use std::ops::{Deref, DerefMut};
 use std::path::Path;
 use std::sync::Mutex;
-use tokenizers::{tokenizer, Tokenizer};
+use tokenizers::tokenizer::Tokenizer;
+
 
 const SEP_TOKEN_ID: u32 = 102;
 
@@ -52,7 +53,7 @@ impl BlipModel {
             candle_transformers::generation::LogitsProcessor::new(1337, None, None);
         let blip_tokenizer = env::var("BLIP_TOKENIZER").expect("cannot find BLIP_TOKENIZER");
 
-        let tokenizer = tokenizers::Tokenizer::from_file(blip_tokenizer).map_err(Error::msg)?;
+        let tokenizer = Tokenizer::from_file(blip_tokenizer).map_err(Error::msg)?;
         let mut _tokenizer = TokenOutputStream::new(tokenizer);
         let mut words: Vec<String> = vec![];
         for index in 0..100 {
