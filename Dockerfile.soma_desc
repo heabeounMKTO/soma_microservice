@@ -1,0 +1,17 @@
+FROM nvidia/cuda:12.9.0-devel-ubuntu24.04 as builder
+
+COPY ./soma_core /soma_core 
+WORKDIR /home
+ENV DEBIAN_FRONTEND=noninteractive
+COPY soma_desc/src ./src
+COPY soma_desc/Cargo.toml ./Cargo.toml
+RUN apt-get update && apt-get upgrade -y 
+RUN cargo build --release
+
+
+FROM nvidia/cuda:12.9.0-runtime-ubuntu24.04 as runtime
+ENV DEBIAN_FRONTEND=noninteractive
+WORKDIR /home 
+COPY --from=builder /home/target/release/soma_desc /home
+CMD [ "/home/soma_desc" , "--workers" , "4"]
+
